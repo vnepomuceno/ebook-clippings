@@ -1,5 +1,7 @@
 # E-book Clippings
 
+![Build Status](https://api.travis-ci.com/vnepomuceno/ebook-clippings.svg?branch=master)
+
 ## Getting Started
 
 Checkout project and run:
