@@ -1,6 +1,6 @@
 # E-book Clippings
 
-![Build Status](https://api.travis-ci.com/vnepomuceno/ebook-clippings.svg?branch=master)
+[![Build Status](https://app.travis-ci.com/vnepomuceno/ebook-clippings.svg?branch=main)](https://app.travis-ci.com/vnepomuceno/ebook-clippings)
 
 ## Getting Started
 
