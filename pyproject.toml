@@ -6,7 +6,7 @@ authors = ["Valter Nepomuceno <valter.nep@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.scripts]
-import = "ebook_clippings.scripts.import:import_clippings_command"
+import = "ebook_clippings.clippings:import_clippings_command"
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -14,6 +14,7 @@ click = "^8.0.3"
 ftfy = "^6.0.3"
 coloredlogs = "^15.0.1"
 black = "^21.9b0"
+pytest = "^6.2.5"
 
 [tool.poetry.dev-dependencies]
 

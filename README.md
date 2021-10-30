@@ -4,7 +4,7 @@
 
 Checkout project and run:
 
-```
+```bash
 poetry install
 ```
 
@@ -12,6 +12,6 @@ poetry install
 
 ### Convert `My Clippings.txt` to a `.json` file
 
-```
-poetry run import --output-filepath='./resources/clippings.json'
+```bash
+poetry run import --input-filepath="resources/2021-10-27-MyClippings.txt" --output-filepath="resources/clippings.json"
 ```

@@ -34,34 +34,32 @@ class ClippingsService:
 
     @staticmethod
     def _extract_attributes(entry: str) -> Tuple[str, ...]:
-        return (
-            entry.split("\n\n")[0]
-            .split("\n")[0]
-            .split(" (")[0]
-            .replace('"', ""),  # book name
-            entry.split("\n\n")[0]
-            .split("\n")[0]
-            .split(" (")[1]
-            .replace(")", ""),  # book author
-            entry.split("\n\n")[0]
-            .split("\n")[1]
-            .split(" | ")[0]
-            .split("on ")[1],  # location
-            entry.split("\n\n")[1].replace("\n", ""),  # content
-            entry.split("\n\n")[0]
-            .split("\n")[1]
-            .split(" | ")[1]
-            .split("on ")[1],  # datetime
-        )
+        try:
+            # Attribute extraction
+            metadata, content = entry.split("\n\n")
+            book_metadata = metadata.split("\n")[0]
+            clipping_metadata = metadata.split("\n")[1]
+            book_name = book_metadata.split(" (")[0].replace('"', "")
+            book_author = book_metadata.split(" (")[1].replace(")", "")
+            clipping_location = clipping_metadata.split(" | ")[0].split("on ")[1]
+            clipping_datetime = clipping_metadata.split(" | ")[1].split("on ")[1]
+
+            # Post-processing
+            content = content.replace("\n", "")
+        except Exception as exception:
+            logger.error(f"Cannot extract attributes of {entry=}, raised {exception=}")
+
+        return book_name, book_author, clipping_location, content, clipping_datetime
 
     def export_clippings_to_json(
         self,
         clippings: Iterable[BookClippings],
         sort_rule: Optional[Callable[[BookClippings], str]] = None,
+        indent: Optional[int] = 2,
     ):
         clippings_set = {clip.book_name: clip.book_author for clip in clippings}
         logger.debug(
-            f"Exporting clippings from books {json.dumps(clippings_set, indent=2)}"
+            f"Exporting clippings from books {json.dumps(clippings_set, indent=indent)}"
         )
 
         """Dump clippings to JSON"""
@@ -166,10 +164,11 @@ class ClippingsService:
 
 
 @click.command()
-@click.option("--output-filepath", help="File path of the output")
-def import_clippings_command(output_filepath):
+@click.option("--input-filepath", type=str, help="File path of the raw clippings")
+@click.option("--output-filepath", type=str, help="File path of the json output")
+def import_clippings_command(input_filepath: str, output_filepath: str):
     clipping_service = ClippingsService(
-        clippings_filepath="resources/My Clippings.txt",
+        clippings_filepath=input_filepath,
         json_filepath=output_filepath,
     )
     clipping_list: Iterable[BookClippings] = clipping_service.get_clippings()
